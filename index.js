@@ -9,12 +9,17 @@ const offersApi = "https://61c3deadf1af4a0017d990e7.mockapi.io/offers/near_by?la
 
 
 app.get('/',  (async (req,res) => {
-    let apiResponse = await axios.get(offersApi);
-    const offer = new Offers(apiResponse.data,"2019-12-25")
-    res.send(offer.filterOffers())
+    try {
+        let apiResponse = await axios.get(offersApi)
+        const offer = new Offers(apiResponse.data,"2019-12-25")
+        res.send(offer.filterOffers())
+    } catch(e) {
+        console.log(e)
+        res.status(500).send({error : "Something went wrong when retrieving offers"})
+    }
 }))
 
-app.listen(port, () => console.log(`example app listenning at http://localhost:${port}`))
+app.listen(port, () => console.log(`app is listenning at http://localhost:${port}`))
 
 
 
